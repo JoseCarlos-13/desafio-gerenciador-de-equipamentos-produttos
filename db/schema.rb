@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_21_063715) do
+ActiveRecord::Schema.define(version: 2022_12_21_202249) do
 
   create_table "equipment", force: :cascade do |t|
     t.integer "code"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2022_12_21_063715) do
     t.string "note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "local_id", null: false
+    t.index ["local_id"], name: "index_equipment_on_local_id"
   end
 
   create_table "locals", force: :cascade do |t|
@@ -28,4 +30,5 @@ ActiveRecord::Schema.define(version: 2022_12_21_063715) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "equipment", "locals"
 end

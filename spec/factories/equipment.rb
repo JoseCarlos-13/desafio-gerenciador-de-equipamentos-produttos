@@ -5,5 +5,6 @@ FactoryBot.define do
     brand { "MyText" }
     equipment_type { 1 }
     note { "MyText" }
+    local_id { 1 }
   end
 end

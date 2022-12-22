@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe "Equipment", type: :request do
   describe "GET#index" do
     context 'when the equipment are listed' do
-      let(:equipment) { create_list(:equipment, 3) }
+      let(:local) { create(:local) }
+      let(:equipment) { create_list(:equipment, 3, local_id: local.id) }
 
       before do
         equipment
