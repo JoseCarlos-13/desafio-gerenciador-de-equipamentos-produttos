@@ -6,6 +6,11 @@ class EquipmentController < ApplicationController
 
     equipment.includes(:local)
 
+    @pagy, equipment = pagy(
+      equipment, page: params[:page],
+                 items: params[:items]
+    )
+
     render json: equipment,
            each_serializer: Equipment::Index::EquipmentSerializer,
            status: :ok

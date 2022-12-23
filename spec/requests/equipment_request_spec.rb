@@ -23,7 +23,6 @@ RSpec.describe "Equipment", type: :request do
 
     context 'whe the equipment list is filtered' do
       context 'by name' do
-        let!(:params) { { name: 'equipment2' } }
         let!(:local) { create(:local) }
         let!(:equipment1) { create(:equipment, name: 'equipment1',
                                                local_id: local.id) }
@@ -37,16 +36,15 @@ RSpec.describe "Equipment", type: :request do
           equipment2
           equipment3
   
-          @query_list = EquipmentQuery.new(params).call
+          get '/equipment', params: { name: 'equipment2' }
         end
   
         it 'must return the attribute name value' do
-          expect(@query_list[0][:name]).to eq('equipment2')
+          expect(json_body[0][:name]).to eq('equipment2')
         end
       end
   
       context 'by code' do
-        let!(:params) { { code: 123123123 } }
         let!(:local) { create(:local) }
         let!(:equipment1) { create(:equipment, code: 321321321,
                                                local_id: local.id) }
@@ -60,16 +58,15 @@ RSpec.describe "Equipment", type: :request do
           equipment2
           equipment3
   
-          @query_list = EquipmentQuery.new(params).call
+          get '/equipment', params: { code: 123123123 }
         end
   
         it 'must return the attribute code value' do
-          expect(@query_list[0][:code]).to eq(123123123)
+          expect(json_body[0][:code]).to eq(123123123)
         end
       end
   
       context 'by all params' do
-        let!(:params) { { name: 'equipment2', code: 123123123 } }
         let!(:local) { create(:local) }
         let!(:equipment1) { create(:equipment, name: 'equipment1',
                                                code: 321321321,
@@ -86,12 +83,41 @@ RSpec.describe "Equipment", type: :request do
           equipment2
           equipment3
   
-          @query_list = EquipmentQuery.new(params).call
+          get '/equipment', params: { name: 'equipment2', code: 123123123 }
         end
   
         it 'must return the attribute code value' do
-          expect(@query_list[0][:name]).to eq('equipment2')
-          expect(@query_list[0][:code]).to eq(123123123)
+          expect(json_body[0][:name]).to eq('equipment2')
+          expect(json_body[0][:code]).to eq(123123123)
+        end
+      end
+
+      context 'when have a pagination in the list' do
+        let!(:local) { create(:local) }
+        let!(:equipment1) { create(:equipment, name: 'equipment1',
+                                               code: 321321321,
+                                               local_id: local.id) }
+        let!(:equipment2) { create(:equipment, name: 'equipment2',
+                                               code: 123123123,
+                                               local_id: local.id) }
+        let!(:equipment3) { create(:equipment, name: 'equipment3',
+                                               code: 147852369,
+                                               local_id: local.id) }
+        let!(:equipment4) { create(:equipment, name: 'equipment4',
+                                                code: 147852369,
+                                                local_id: local.id) }
+  
+        before do
+          equipment1
+          equipment2
+          equipment3
+          equipment4
+  
+          get '/equipment', params: { page: 2, items: 2 }
+        end
+  
+        it 'must return the attribute code value' do
+          expect(json_body.count).to eq(2)
         end
       end
     end
