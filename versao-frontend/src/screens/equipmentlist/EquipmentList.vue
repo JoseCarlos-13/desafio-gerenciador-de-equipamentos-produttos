@@ -1,30 +1,15 @@
 <template>
   <div>
     <h1>EquipmentListScreen</h1>
-    <p>{{ equipment }}</p>
+    <EquipmentList></EquipmentList>
   </div>
 </template>
 
 <script>
-import api_instance from '@/main';
-
+  import EquipmentList from '../../components/equipmentlist/EquipamentList.vue'
   export default {
-    data() {
-      return {
-        equipment: ''
-      }
-    },
-
-    methods: {
-      loadEquipments () {
-        api_instance.get('/equipment').then(response => {
-          this.equipment = response
-        })
-      }
-    },
-
-    mounted () {
-      this.loadEquipments()
+    components: {
+      EquipmentList
     }
   }
 </script>

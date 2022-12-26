@@ -1,5 +1,15 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <v-list>
+      <v-list-item>
+        <v-btn><router-link to="/">equipmentlist</router-link></v-btn>
+        <v-btn><router-link to="/equipmentform">equipmentform</router-link></v-btn>
+        <v-btn><router-link to="/equipmentform">equipmentform</router-link></v-btn>
+        <v-btn><router-link to="/equipmentform">equipmentform</router-link></v-btn>
+      </v-list-item>
+    </v-list>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
