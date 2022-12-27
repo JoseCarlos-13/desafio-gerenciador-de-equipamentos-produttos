@@ -1,16 +1,16 @@
-<template>
+<template lang="html">
   <div>
-    <v-list id="menu-list">
-      <v-list-item class="menu-item">
-        <v-btn class="menu-button"><router-link to="/">equipmentlist</router-link></v-btn>
-      </v-list-item>
-      <v-list-item class="menu-item">
-        <v-btn class="menu-button"><router-link to="/equipmentform">equipmentform</router-link></v-btn>
-      </v-list-item>
-      <v-list-item class="menu-item">
-        <v-btn class="menu-button"><router-link to="/localform">localform</router-link></v-btn>
-      </v-list-item>
-    </v-list>
+    <ul id="menu-list">
+      <li class="menu-item">
+        <v-btn class="menu-button"><router-link to="/"><a style="color">Equipment List</a></router-link></v-btn>
+      </li>
+      <li class="menu-item">
+        <v-btn class="menu-button"><router-link to="/equipmentform"><a>Create Equipment</a></router-link></v-btn>
+      </li>
+      <li class="menu-item">
+        <v-btn class="menu-button"><router-link to="/localform"><a>Create local</a></router-link></v-btn>
+      </li>
+    </ul>
     <v-row>
       <v-col>
         <router-view></router-view>
@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -41,11 +41,16 @@ export default {
   #menu-list {
     display: flex;
     flex-direction: row;
-    margin: auto 10px auto 10px !important;
-    justify-content: center;
+    color: white;
+    margin: 70px 600px 30px 600px !important;
+    justify-content: space-evenly;
   }
 
   #menu-list > .menu-item > .menu-button {
-    background-color: rgb(126, 8, 8);
+    background-color: rgba(211, 211, 211, 0.575);
+  }
+
+  #menu-list > .menu-item > .menu-button > a {
+    color: white !important;
   }
 </style>

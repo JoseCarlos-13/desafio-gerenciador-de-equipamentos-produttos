@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "Equipment", type: :request do
-  describe "GET#index" do
+RSpec.describe 'Equipment', type: :request do
+  describe 'GET#index' do
     context 'when the equipment are listed' do
       let(:local) { create(:local) }
       let(:equipment) { create_list(:equipment, 3, local_id: local.id) }
@@ -124,6 +124,25 @@ RSpec.describe "Equipment", type: :request do
     end
   end
 
+  describe 'GET#show' do
+    context 'when a equipment is selected' do
+      let!(:local) { create(:local) }
+      let!(:equipment) { create(:equipment, local_id: local.id) }
+
+      before do
+        get "/equipment/#{equipment.id}"
+      end
+
+      it 'must return 200 status code' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'must return equipment attributes' do
+        expect(json_body).to include(:id, :name, :brand, :equipment_type, :local, :code, :note)
+      end
+    end
+  end
+
   describe 'POST#create' do
     context 'when the equipment is created' do
       let!(:local) { create(:local) }
@@ -134,7 +153,7 @@ RSpec.describe "Equipment", type: :request do
       end
       let!(:equipment_params) do
         attributes_for(:equipment, name: 'equipment1', code: 123123123, 
-                                   brand: 'myString', equipment_type: 1,
+                                   brand: 'myString', equipment_type: 'monitor',
                                    note: 'lalalal', local_id: local.id,
                                    equipment_photo: equipment_photo)
       end

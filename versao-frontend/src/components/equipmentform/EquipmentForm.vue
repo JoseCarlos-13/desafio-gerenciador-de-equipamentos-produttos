@@ -18,12 +18,12 @@
         :items="equipmentOptions" item-text="key"
         item-value="id" label="Type"></v-select>
 
-      <!-- <v-file-input
-        v-model="equipment.equipment_photo"
-        label="Photo"
-        outlined
-        dense
-      ></v-file-input> -->
+        <v-file-input
+          class="form-item"
+          @change="handleFileUpload( $event )"
+            label="Photo"
+            id="file" ref="file"
+          ></v-file-input>
     
       <v-text-field class="form-item"
                     v-model="equipment.note" label="Note">
@@ -32,7 +32,7 @@
       <div class="form-select">
         <select class="form-item" v-model="equipment.local_id">
           <option class="placeholder" value="" disabled selected>
-            Select your option
+            Select your local option
           </option>
           <option v-for="localOption in localOptions"
                   :value="localOption.id" :key="localOption.id">
@@ -68,11 +68,6 @@ export default {
     },
 
   methods: {
-      createEquipment () {
-        api_instance.post('/equipment', { equipment: this.equipment })
-                    .then(() => this.$router.push('/'))
-      },
-
       loadEquipmentOptions () {
         api_instance.get('/equipment/equipment_type_options')
                     .then(response => {
@@ -86,13 +81,48 @@ export default {
         })
       },
 
-      editEquipment () {
-        api_instance.put('/equipment', { equipment: this.equipment })
-                    .then(response => response)
+      createEquipment () {
+        api_instance.post('/equipment', { equipment: this.equipment }, {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }).then(() => this.$router.push('/'))
       },
 
       loadEditForm () {
-        // if (this.$route.params.id)
+        let headers = { headers: { 'Content-Type': 'multipart/form-data' } }
+
+        if (this.$route.params.id) {
+          api_instance.get(`/equipment/${this.$route.params.id}`, headers).then(response => {              
+              this.equipment = {
+                name: response.data.name,
+                brand: response.data.brand,
+                equipment_type: response.data.equipment_type,
+                equipment_photo: response.data.equipment_photo,
+                code: response.data.code,
+                note: response.data.note,
+                local_id: response.data.local.id
+              }
+            }) } else {
+              this.equipment = {
+                name: '',
+                brand: '',
+                equipment_type: '',
+                equipment_photo: '',
+                code: '',
+                note: '',
+                local_id: '' 
+              }
+            }
+      },
+
+      handleFileUpload(){
+        this.equipment.equipment_photo = this.$refs.file.files[0]
+      },
+
+      editEquipment () {
+        api_instance.put(`/equipment/${this.$route.params.id}`, { equipment: this.equipment })
+                    .then(() => this.$router.push('/'))
       }
     },
 
@@ -105,7 +135,7 @@ export default {
     mounted () {
       this.loadEquipmentOptions()
       this.loadLocationsOptions()
-      this.equipment
+      this.loadEditForm()
     }
 }
 </script>

@@ -1,5 +1,5 @@
 class EquipmentController < ApplicationController
-  before_action :equipment, only: %i[update destroy]
+  before_action :equipment, only: %i[show update destroy]
 
   def index
     equipment = EquipmentQuery.new(params).call
@@ -33,6 +33,12 @@ class EquipmentController < ApplicationController
     head :no_content
   end
 
+  def show
+    render json: equipment,
+           serializer: Equipment::Show::EquipmentSerializer,
+           status: :ok
+  end
+
   def destroy
     equipment.destroy!
 
@@ -51,9 +57,8 @@ class EquipmentController < ApplicationController
 
   def equipment_params
     params.require(:equipment).permit(:name, :brand, :equipment_type,
-                                      :code, :note, :local_id 
-                                      # :equipment_photo
-                                    )
+                                      :code, :note, :local_id,
+                                      :equipment_photo)
   end
 
   def equipment

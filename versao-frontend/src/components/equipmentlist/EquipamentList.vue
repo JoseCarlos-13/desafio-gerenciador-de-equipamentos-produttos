@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <v-table>
+    <v-table id="equipment-table">
       <thead>
         <tr>
           <th v-for="tableLabel in tableLabels" :key="tableLabel.id">
@@ -15,18 +15,24 @@
           <th>{{ equipment.local }}</th>
           <th>{{ equipment.equipment_type }}</th>
           <th>{{ equipment.code }}</th>
-          <!-- <th><img :src="equipment.equipment_photo" width="100"></th> -->
+          <th><img :src="equipment.equipment_photo" width="100"></th>
           <th>
-            <v-btn color="primary" size="small"
+            <div class="action-buttons">
+              <v-btn class="button" color="primary" size="small"
                    @click="editFormRouter(equipment)">Edit</v-btn>
-            <v-btn color="error" size="small"
-                   @click="removeEquipment(equipment)">
-              Remove
-            </v-btn>
+              <v-btn class="button" color="error" size="small"
+                    @click="removeEquipment(equipment)">
+                Remove
+              </v-btn>
+            </div>
           </th>
         </tr>
       </tbody>
     </v-table>
+    <v-pagination
+      v-model="page"
+      :length="6"
+    ></v-pagination>
   </div>
 </template>
 
@@ -36,15 +42,16 @@ import api_instance from '@/main';
 export default {
   data() {
       return {
+        page: '',
+        items: '',
         equipmentList: '',
-        // tableLabels: ['Name', 'Brand', 'Local', 'Type', 'Code', 'Photo', 'Actions']
-        tableLabels: ['Name', 'Brand', 'Local', 'Type', 'Code', 'Actions']
+        tableLabels: ['Name', 'Brand', 'Local', 'Type', 'Code', 'Photo', 'Actions']
       }
     },
 
     methods: {
       loadEquipment () {
-        api_instance.get('/equipment').then(response => {
+        api_instance.get('/equipment').then((response) => {
           this.equipmentList = response.data
         })
       },
@@ -67,7 +74,8 @@ export default {
 </script>
 
 <style>
-  ul {
-    list-style: none;
+  .action-buttons {
+    display: flex;
+    justify-content: space-evenly;
   }
 </style>
