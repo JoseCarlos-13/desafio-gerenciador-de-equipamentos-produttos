@@ -1,13 +1,18 @@
-<template lang="">
-    <div>
-        <h1>EquipmentFormScreen</h1>
-    </div>
+<template>
+  <div>
+    <EquipmentForm></EquipmentForm>
+  </div>
 </template>
+
 <script>
-export default {
-    
-}
+  import EquipmentForm from '../../components/equipmentform/EquipmentForm.vue'
+  export default {
+    components: {
+      EquipmentForm
+    }
+  }
 </script>
-<style lang="">
+
+<style>
     
 </style>

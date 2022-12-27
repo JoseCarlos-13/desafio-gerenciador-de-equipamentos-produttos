@@ -39,11 +39,21 @@ class EquipmentController < ApplicationController
     head :no_content
   end
 
+  def equipment_type_options
+    equipment_type_options = Equipment.equipment_types.map do |key, id|
+      {id: id, key: key}
+    end
+
+    render json: equipment_type_options, status: :ok
+  end
+
   private
 
   def equipment_params
     params.require(:equipment).permit(:name, :brand, :equipment_type,
-                                      :code, :note, :local_id, :equipment_photo)
+                                      :code, :note, :local_id 
+                                      # :equipment_photo
+                                    )
   end
 
   def equipment

@@ -17,7 +17,8 @@ RSpec.describe "Equipment", type: :request do
       end
 
       it 'must return the equipment attributes' do
-        expect(json_body[0]).to include(:name, :brand, :equipment_type, :code)
+        expect(json_body[0]).to include(:name, :brand, :equipment_type, :code,
+                                        :local)
       end
     end
 
@@ -133,7 +134,7 @@ RSpec.describe "Equipment", type: :request do
       end
       let!(:equipment_params) do
         attributes_for(:equipment, name: 'equipment1', code: 123123123, 
-                                   brand: 'myString', equipment_type: 'mouse',
+                                   brand: 'myString', equipment_type: 1,
                                    note: 'lalalal', local_id: local.id,
                                    equipment_photo: equipment_photo)
       end
@@ -148,7 +149,7 @@ RSpec.describe "Equipment", type: :request do
 
       it 'must return the equipment created attributes' do
         expect(json_body).to include(:name, :brand, :equipment_type, :local,
-                                     :note, :code)
+                                     :equipment_photo, :note, :code)
       end
 
       it 'must return the local attributes' do
@@ -215,6 +216,31 @@ RSpec.describe "Equipment", type: :request do
 
       it 'must return the equipment model count' do
         expect(Equipment.count).to eq(0)
+      end
+    end
+  end
+
+  describe 'GET#equipment_type_options' do
+    context 'when the equipment type options are listed' do
+      let(:equipment_type_options) { Equipment.equipment_types.map{equipment_type => equipment_type} }
+
+      before do
+        get '/equipment/equipment_type_options'
+      end
+
+      it 'must return 200 status code' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'must return the keys' do
+        expect(json_body[0][:key]).to eq('air_conditioner')
+        expect(json_body[1][:key]).to eq('coffee_machine')
+        expect(json_body[2][:key]).to eq('computer')
+        expect(json_body[3][:key]).to eq('monitor')
+        expect(json_body[4][:key]).to eq('mouse')
+        expect(json_body[5][:key]).to eq('keyboard')
+        expect(json_body[6][:key]).to eq('television')
+        expect(json_body[7][:key]).to eq('router')
       end
     end
   end
